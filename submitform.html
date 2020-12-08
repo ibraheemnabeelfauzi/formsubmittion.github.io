@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script language="javascript">
+	function SendServerInfo()
+	{
+	$.ajaxSetup({
+			"contentType":"application/json"
+	});
+		var dataPayload = {"SalesDescription":salesDescription,
+		"SalesDiscount Amount":salesDiscountAmount,
+		"SalesCode":salesCode,
+		 "SalesRestrictionSwitch":salesRestrictionSwitch,
+		 "SalesRestrictionCount":salesRestrictionCount
+		 "CustomerRestrictionSwitch":customerRestrictionSwitch,
+		 "CustomerRestrictionCount":customerRestrictionCount,
+		 "PromotionId":promotionId
+	};
+	   $.post('http://ec2-34-220-78-150.us-west-2.compute.amazonaws.com:8080/nav-insider-api/promotions/sales', JSON.stringify(dataPayload))
+				.done(function (response) {
+					document.getElementById("salesDescription").value="";
+					document.getElementById("salesDiscountAmount").value="";
+					document.getElementById("salesCode").value="";
+					document.getElementById("salesRestrictionSwitch").value="";
+					document.getElementById("salesRestrictionCount").value="";
+					document.getElementById("customerRestrictionSwitch").value="";
+					document.getElementById("promotionId").value="";
+					if (response["operationResult"] === "SUCCESS")
+					{
+						$("#not-successful-result").attr("style", "display: none !important;");
+						$("#successful-result").attr("style", "display: block !important;");
+					}	else {
+						$("#successful-result").attr("style", "display: none !important;");
+						$("#not-successful-result").attr("style", "display: block !important;");
+					}
+					}
+				);
+			}
+	</script>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	<title>ُEnter Sales Discounts</title>
+	<link rel="stylesheet"  href="main.css">
+</head>
+
+<body>
+<div class="sidenav">
+	<a href="submitform.html">Enter a Sale/Discount</a>
+	<a href="voidPage.html">Void a Sale/Discount</a>
+  </div>
+  <div class="main">
+  </div>
+ <form>
+	
+	<div class="PromotionId">
+		<h3>Promotion ID</h3>
+		 <label for="promotionId"></label>
+		 <input type="text" name="Promotion ID" placeholder="Enter the promotion ID" id="promotionId">
+		</div>
+
+		<div class="SalesDescription">
+	 <h3>Sales Description</h3>
+ 	<label for="SalesDescription"></label>
+ 	<input type="text" name="Sales Description" placeholder="Enter a description for this sale/discount" id="salesDescription">
+</div>
+
+<div class="SalesDiscountAmount">
+	<h3>Sales Discount Amount</h3>
+     <label for="SalesDiscountAmount"> </label>
+     <input type="text" name="Sales Discount Amount" placeholder="This needs to be a % or a $ amount" id="salesDiscountAmount">
+	</div>
+
+<div class="SalesBeginDate">
+	 <h3>Sales Begin Date</h3>
+		<label for="SalesBeginDate"></label>
+		<input type="Date" id="start" name="Sales Begin Date" value="YYYY-MM-DD" min="=2020-11-11" max="2030-12-31" id="salesBeginDate">
+	</div>
+
+<div class="SalesEndDate">
+ <h3>Sales End Date</h3>
+ <label for="SalesEndDate"></label>
+ 	 	 <input type="Date"  id="end"name="Sales End Date" value="YYYY-MM-DD" min="=2020-11-11" max="2030-12-31" id="salesEndDate">
+		</div>
+
+<div class="SalesCode">
+ 	<h3>Sales Code</h3>
+<label for="SalesCode"></label>
+ 	<input type="text" name="Sales Code" placeholder="Enter the discount code if you wish to use one, if not it will be auto generated" id="salesCode">
+</div>
+
+	 <div class="salesRestrictionSwitch">
+<h3>Sales Restriction Switch</h3>
+<label class="switch1">
+  <input type="checkbox" id="salesRestrictionSwitch">
+  <span class="slider1"></span>
+</label>
+
+</div>
+<div class="salesRestrictionCount">
+<h3>Sales Restriction Countٍ</h3>
+<label for="Sales Restriction Switch"></label>
+  <input type="text" id="salesRestrictionCount">
+</div>
+  
+<div class="customerRestrictionSwitch">
+<h4>Customer Restriction Switch<h4>
+	<label class="switch3">
+  <input type="checkbox" id="customerRestrictionSwitch">
+  <span class="slider3"></span>
+</label>
+
+</div>
+<div class="customerRestrictionCount">
+<h4>Customer Restriction Count<h4>
+	<label for="Customer Restriction Count"></label>
+  <input type="text" id="customerRestrictionCount">
+</div>
+<p>Click Sumbit to insert the sale/discount:</p>
+<input type="submit" name="Submit Sale/Discount" id="submitForm" onclick="SendServerInfo()"/> 
+</form>
+</body>
+</html>
+
+

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script language="javascript">
+	function SendServerInfo2()
+	{
+	$.ajaxSetup({
+			"contentType":"application/json"
+	});
+		var dataPayload = {
+			"CustomerRestrictionSwitch":customerRestrictionSwitch,
+		"SalesCode":salesCode,
+
+	};
+	   $.put('http://ec2-34-220-78-150.us-west-2.compute.amazonaws.com:8080/nav-insider-api/promotions/sales', JSON.stringify(dataPayload))
+				.done(function (response) {
+					document.getElementById("customerRestrictionSwitch").value="";
+					document.getElementById("salesCode").value="";
+					
+					if (response["operationResult"] === "SUCCESS")
+					{
+						$("#not-successful-result").attr("style", "display: none !important;");
+						$("#successful-result").attr("style", "display: block !important;");
+					}	else {
+						$("#successful-result").attr("style", "display: none !important;");
+						$("#not-successful-result").attr("style", "display: block !important;");
+					}
+					}
+				);
+			}
+	</script>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ُEnter Sales Discounts</title>
+	<link rel="stylesheet"  href="main.css">
+</head>
+ 
+<body>
+
+<div class="sidenav">
+	<a href="submitform.html">Enter a Sale/Discount</a>
+	<a href="voidPage.html">Void a Sale/Discount</a>
+	
+  </div>
+  <div class="main">
+  </div> 
+
+ <form id="SendServerDetails" method="post" class="form" id="submitFormDetail2" action="http://ec2-34-220-78-150.us-west-2.compute.amazonaws.com:8080/nav-insider-api/promotions/sales">
+	 
+
+  
+  <div class="customerRestrictionSwitch">
+<h4>Customer Restriction Switch<h4> 
+	<label class="switch3">
+  <input type="checkbox" id="customerRestrictionSwitch">
+  <span class="slider3"></span>
+</label>
+</div> 
+
+
+<div class="SalesCodeNumber"> 
+<h4>Sales Code Number<h4> 
+	<label for="Sales Code Number"></label>
+  <input type="text" id="salesCode">
+</div>
+
+<p>Click Sumbit to insert the sale/discount:</p>
+<input type="submit" name="Submit Sale/Discount" id="submitForm" onclick="SendServerInfo2()"> 
+
+</form>
+</body>
+</html>
